@@ -188,7 +188,7 @@ public class Model extends Observable {
             for (int col = 0; col < boardSize; col += 1) {
                 currentTile = b.tile(col, row);
                 if (isEqualToEast(b, currentTile)
-                        || isEqualToSouth(b, currentTile)) {
+                        || isEqualToNorth(b, currentTile)) {
                     return true;
                 }
             }
@@ -212,7 +212,7 @@ public class Model extends Observable {
     /**
      * Return true if the tile is equal to the south one.
      */
-    public static boolean isEqualToSouth(Board b, Tile t) {
+    public static boolean isEqualToNorth(Board b, Tile t) {
         int boardSize = b.size();
         int row = t.row();
         int col = t.col();
