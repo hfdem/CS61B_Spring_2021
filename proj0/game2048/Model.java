@@ -148,12 +148,12 @@ public class Model extends Observable {
         for (int row = maxRowIndex; row >= 0; row -= 1) {
             if (board.tile(col, row) != null) {
                 Tile t = board.tile(col, row);
-                // Condition for move(merge is a part of move)
                 if (row != maxRowIndex - blockNum
                         || (!isMerged && t.value() == previousValue)) {
-                    // Condition for merge
+                    // Condition for move(merge is a part of move)
                     if (!isMerged && t.value() == previousValue) {
                         isMerged = true;
+                        // Condition for merge
                         targetRow = maxRowIndex - blockNum + 1;
                         blockNum -= 1;
                         score += 2 * t.value();
