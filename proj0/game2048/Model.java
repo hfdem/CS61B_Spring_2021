@@ -5,7 +5,7 @@ import java.util.Observable;
 
 
 /** The state of a game of 2048.
- *  @author TODO: YOUR NAME HERE
+ *  @author hfdem
  */
 public class Model extends Observable {
     /** Current contents of the board. */
@@ -137,8 +137,16 @@ public class Model extends Observable {
      *  Empty spaces are stored as null.
      * */
     public static boolean emptySpaceExists(Board b) {
-        // TODO: Fill in this function.
-        return false;
+        boolean anyEmpty = false;
+        int boardSize = b.size();
+        for (int row = 0; row < boardSize; row += 1) {
+            for (int col = 0; col < boardSize; col += 1) {
+                if (b.tile(col, row) == null) {
+                    anyEmpty = true;
+                }
+            }
+        }
+        return anyEmpty;
     }
 
     /**
