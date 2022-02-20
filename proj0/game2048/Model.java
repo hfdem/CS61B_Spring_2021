@@ -155,10 +155,12 @@ public class Model extends Observable {
      */
     public static boolean maxTileExists(Board b) {
         int boardSize = b.size();
+        Tile currentTile;
         for (int row = 0; row < boardSize; row += 1) {
             for (int col = 0; col < boardSize; col += 1) {
-                if (b.tile(col, row) != null
-                        && b.tile(col, row).value() == MAX_PIECE) {
+                currentTile = b.tile(col, row);
+                if (currentTile != null
+                        && currentTile.value() == MAX_PIECE) {
                     return true;
                 }
             }
@@ -173,10 +175,52 @@ public class Model extends Observable {
      * 2. There are two adjacent tiles with the same value.
      */
     public static boolean atLeastOneMoveExists(Board b) {
-        // TODO: Fill in this function.
+        return emptySpaceExists(b) || mergeable(b);
+    }
+
+    /**
+     * Return true if any two neighbor tiles can be merged.
+     */
+    public static boolean mergeable(Board b) {
+        int boardSize = b.size();
+        Tile currentTile;
+        for (int row = 0; row < boardSize; row += 1) {
+            for (int col = 0; col < boardSize; col += 1) {
+                currentTile = b.tile(col, row);
+                if (isEqualToEast(b, currentTile)
+                        || isEqualToSouth(b, currentTile)) {
+                    return true;
+                }
+            }
+        }
         return false;
     }
 
+    /**
+     * Return true if the tile is equal to the east one.
+     */
+    public static boolean isEqualToEast(Board b, Tile t) {
+        int boardSize = b.size();
+        int row = t.row();
+        int col = t.col();
+        if (col + 1 < boardSize) {
+            return b.tile(col + 1, row).value() == t.value();
+        }
+        return false;
+    }
+
+    /**
+     * Return true if the tile is equal to the south one.
+     */
+    public static boolean isEqualToSouth(Board b, Tile t) {
+        int boardSize = b.size();
+        int row = t.row();
+        int col = t.col();
+        if (row + 1 < boardSize) {
+            return b.tile(col, row + 1).value() == t.value();
+        }
+        return false;
+    }
 
     @Override
      /** Returns the model as a string, used for debugging. */
