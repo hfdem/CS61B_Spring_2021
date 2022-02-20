@@ -119,7 +119,7 @@ public class Model extends Observable {
 
     /**
      * Traversed all column to tilt up.
-     * @return true if any block in this board have moved
+     * @return      if any block in this board have moved
      */
     public boolean tiltUp() {
         boolean changed = false;
@@ -134,8 +134,8 @@ public class Model extends Observable {
     }
 
     /**
-     * @param col target column to tilt up
-     * @return true if any block in this column has moved
+     * @param col   target column to tilt up
+     * @return      if any block in this column has moved
      */
     public boolean colTiltUp(int col) {
         boolean changed = false;
