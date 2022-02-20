@@ -107,16 +107,69 @@ public class Model extends Observable {
      *    and the trailing tile does not.
      * */
     public boolean tilt(Side side) {
-        boolean changed;
-        changed = false;
-
-        // TODO: Modify this.board (and perhaps this.score) to account
-        // for the tilt to the Side SIDE. If the board changed, set the
-        // changed local variable to true.
-
+        board.setViewingPerspective(side);
+        boolean changed = tiltUp();
+        board.setViewingPerspective(Side.NORTH);
         checkGameOver();
         if (changed) {
             setChanged();
+        }
+        return changed;
+    }
+
+    /**
+     * Traversed all column to tilt up.
+     * @return true if any block in this board have moved
+     */
+    public boolean tiltUp() {
+        boolean changed = false;
+        int getScore = 0;
+        int boardSize = board.size();
+        for (int col = 0; col < boardSize; col += 1) {
+            if (colTiltUp(col)) {
+                changed = true;
+            }
+        }
+        return changed;
+    }
+
+    /**
+     * @param col target column to tilt up
+     * @return true if any block in this column has moved
+     */
+    public boolean colTiltUp(int col) {
+        boolean changed = false;
+        boolean isMerged = false;
+        int boardSize = board.size();
+        int maxRowIndex = boardSize - 1;
+        int blockNum = 0;
+        int previousValue = 0;
+        int targetRow;
+        for (int row = maxRowIndex; row >= 0; row -= 1) {
+            if (board.tile(col, row) != null) {
+                Tile t = board.tile(col, row);
+                // Condition for move(merge is a part of move)
+                if (row != maxRowIndex - blockNum
+                        || (!isMerged && t.value() == previousValue)) {
+                    // Condition for merge
+                    if (!isMerged && t.value() == previousValue) {
+                        isMerged = true;
+                        targetRow = maxRowIndex - blockNum + 1;
+                        blockNum -= 1;
+                        score += 2 * t.value();
+                    } else {
+                        isMerged = false;
+                        targetRow = maxRowIndex - blockNum;
+                    }
+                    board.move(col, targetRow, t);
+                    changed = true;
+                    previousValue = board.tile(col, targetRow).value();
+                    blockNum += 1;
+                    continue;
+                }
+                previousValue = board.tile(col, row).value();
+                blockNum += 1;
+            }
         }
         return changed;
     }
